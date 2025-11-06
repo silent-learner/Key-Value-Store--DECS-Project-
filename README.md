@@ -81,7 +81,7 @@ sudo apt-get install -y htop
 
 1.  **Clone**: Clone this repository.
     ```sh
-    git clone [Insert Link here](Insert Link here)
+    git clone [https://github.com/silent-learner/Key-Value-Store--DECS-Project-.git](https://github.com/silent-learner/Key-Value-Store--DECS-Project-.git)
     ```
     Your directory should now look like this:
     ```
