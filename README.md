@@ -10,9 +10,10 @@ The system consists of three main C++ executables:
 
 ## Architecture
 
-1.  **HTTP Frontend**: A multi-threaded HTTP server using cpp-httplib (12 worker threads) accepts RESTful API requests.
+1.  **HTTP Frontend**: A multi-threaded HTTP server using cpp-httplib  accepts RESTful API requests.
 2.  **In-Memory Cache**: A custom, thread-safe LRU (Least Recently Used) cache (`LRUCache`) handles the `get_popular` (cache-hit) workload.
-3.  **Database Backend**: A thread-safe connection pool (`ConnectionPool`) manages 10 persistent connections to a PostgreSQL database to handle `put_all` (cache-miss/write) workloads.
+3.  **Database Backend**: A thread-safe connection pool (`ConnectionPool`) manages persistent connections to a PostgreSQL database to handle `put_all` (cache-miss/write) workloads.
+![Architecture](image.png)
 
 ## 1. Installation & Prerequisites
 
