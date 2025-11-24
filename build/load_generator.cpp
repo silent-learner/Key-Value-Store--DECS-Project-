@@ -44,7 +44,7 @@ std::string generate_random_string(size_t length) {
 
 // Generates 100% PUT requests with random keys and large 1MB values.
 bool workload_put_all(httplib::Client& cli) {
-    static thread_local std::string big_value = generate_random_string(1024*100); // 1 MB
+    static thread_local std::string big_value = generate_random_string(1024*100); // 1 kB
     
     std::string key = "key_put_" + generate_random_string(10);
     
