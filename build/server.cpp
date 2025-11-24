@@ -12,7 +12,6 @@
 #include<pthread.h>
 
 
-// Define this *before* including httplib.h to set the thread pool size
 #define CPPHTTPLIB_THREAD_POOL_COUNT 128
 #include "cpp-httplib/httplib.h"
 
@@ -76,7 +75,7 @@ private:
     size_t capacity_;
     std::list<std::pair<std::string, std::string>> cache_items_list_;
     std::map<std::string, std::list<std::pair<std::string, std::string>>::iterator> cache_items_map_;
-    std::mutex mutex_; // Mutex to protect all cache operations
+    std::mutex mutex_; 
 };
 
 
@@ -100,10 +99,8 @@ public:
     std::unique_ptr<pqxx::connection> get() {
         std::unique_lock<std::mutex> lock(mutex_);
         
-        // Wait until a connection is available
         condition_.wait(lock, [this] { return !pool_.empty(); });
 
-        // Get the connection from the front of the queue
         std::unique_ptr<pqxx::connection> conn = std::move(pool_.front());
         pool_.pop();
         
@@ -115,7 +112,6 @@ public:
         
         pool_.push(std::move(conn));
         
-        // Notify one waiting thread that a connection is available
         condition_.notify_one();
     }
 
@@ -137,7 +133,6 @@ public:
         }
     }
 
-    // Get a reference to the underlying pqxx::connection
     pqxx::connection& get() {
         return *conn_;
     }
@@ -154,12 +149,10 @@ private:
 
 class ServerApp {
 public:
-    // Constructor: Connect to DB, set up cache and HTTP routes
     ServerApp() 
       : cache_(CACHE_CAPACITY), 
         db_pool_(DB_POOL_SIZE, DB_CONNECTION_STRING) // Initialize the connection pool
         {
-        // Create the table if it doesn't exist (using one of the connections)
         initialize_database();
         std::cout << "Database connection pool created with " << DB_POOL_SIZE << " connections." << std::endl;
                 
@@ -265,7 +258,6 @@ private:
         });
     }
 
-    // Create the 'key_value' table if it doesn't already exist
     void initialize_database() {
         try {
             auto conn = PooledConnection(this->db_pool_);
